@@ -8,54 +8,56 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10_000];
     private int size = 0;
+    private Integer index;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void save(Resume r) {
-        if (resumeAlreadyPresent(r.getUuid())) {
-            System.out.println("ERROR: Such resume is already present in data base");
-        } else if (size == 10000) {
-            System.out.println("Error: No space left in data base");
+    public void save(Resume resume) {
+        if (getIndexOfResume(resume.getUuid()) != null) {
+            System.out.println("ERROR: Resume with " + resume.getUuid() +" uuid is already present in data base");
+        } else if (size == storage.length) {
+            System.out.println("Error: No space left in data base to save resume with " + resume.getUuid() + " uuid.");
         } else {
-            storage[size] = r;
+            storage[size] = resume;
             size++;
         }
     }
 
     public void update(Resume resume) {
-        if (resumeAlreadyPresent(resume.getUuid())) {
-            storage[indexOfResume(resume.getUuid())] = resume;
-        }else {
-            System.out.println("ERROR: Such resume is already present in data base");
-        }
+        index = getIndexOfResume(resume.getUuid());
 
+        if (index != null) {
+            storage[index.intValue()] = resume;
+        } else {
+            System.out.println("ERROR: Resume with " + resume.getUuid() +" uuid is not present in data base");
+        }
     }
 
     public Resume get(String uuid) {
-        if (resumeAlreadyPresent(uuid)) {
-            for (int i = 0; i <= size; i++) {
-                if (storage[i].toString().equals(uuid)) {
-                    return storage[i];
-                }
-            }
-        }else {
-            System.out.println("ERROR: Such resume is not present in data base");
+        index = getIndexOfResume(uuid);
+
+        if (index != null) {
+            return storage[index.intValue()];
+        } else {
+            System.out.println("ERROR: Resume with " + uuid +" uuid is not present in data base");
         }
         return null;
     }
 
     public void delete(String uuid) {
-        if (resumeAlreadyPresent(uuid)) {
-            storage[indexOfResume(uuid)] = storage[size-1];
-            storage[size-1] = null;
+        index = getIndexOfResume(uuid);
+
+        if (index != null) {
+            storage[index.intValue()] = storage[size - 1];
+            storage[size - 1] = null;
             size--;
-        }else {
-            System.out.println("ERROR: Such resume is not present in data base");
+        } else {
+            System.out.println("ERROR: Resume with " + uuid +" uuid is not present in data base");
         }
     }
 
@@ -67,16 +69,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private Boolean resumeAlreadyPresent(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].toString().equals(uuid)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Integer indexOfResume(String uuid) {
+    private Integer getIndexOfResume(String uuid) {
         for (int i = 0; i <= size; i++) {
             if (storage[i].toString().equals(uuid)) {
                 return i;
