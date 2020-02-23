@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int size = 0;
-    private Integer index;
+    private int index;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -18,7 +18,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (getIndexOfResume(resume.getUuid()) != null) {
+        if (getIndexOfResume(resume.getUuid()) != -1) {
             System.out.println("ERROR: Resume with " + resume.getUuid() +" uuid is already present in data base");
         } else if (size == storage.length) {
             System.out.println("Error: No space left in data base to save resume with " + resume.getUuid() + " uuid.");
@@ -31,8 +31,8 @@ public class ArrayStorage {
     public void update(Resume resume) {
         index = getIndexOfResume(resume.getUuid());
 
-        if (index != null) {
-            storage[index.intValue()] = resume;
+        if (index != -1) {
+            storage[index] = resume;
         } else {
             System.out.println("ERROR: Resume with " + resume.getUuid() +" uuid is not present in data base");
         }
@@ -41,8 +41,8 @@ public class ArrayStorage {
     public Resume get(String uuid) {
         index = getIndexOfResume(uuid);
 
-        if (index != null) {
-            return storage[index.intValue()];
+        if (index != -1) {
+            return storage[index];
         } else {
             System.out.println("ERROR: Resume with " + uuid +" uuid is not present in data base");
         }
@@ -52,8 +52,8 @@ public class ArrayStorage {
     public void delete(String uuid) {
         index = getIndexOfResume(uuid);
 
-        if (index != null) {
-            storage[index.intValue()] = storage[size - 1];
+        if (index != -1) {
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
@@ -69,13 +69,13 @@ public class ArrayStorage {
         return size;
     }
 
-    private Integer getIndexOfResume(String uuid) {
-        for (int i = 0; i <= size; i++) {
+    private int getIndexOfResume(String uuid) {
+        for (int i = 0; i < size; i++) {
             if (storage[i].toString().equals(uuid)) {
                 return i;
             }
         }
-        return null;
+        return -1;
     }
 
 }
