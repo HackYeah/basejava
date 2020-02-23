@@ -19,6 +19,8 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (resumeAlreadyPresent(r.getUuid())) {
             System.out.println("ERROR: Such resume is already present in data base");
+        } else if (size == 10000) {
+            System.out.println("Error: No space left in data base");
         } else {
             storage[size] = r;
             size++;
