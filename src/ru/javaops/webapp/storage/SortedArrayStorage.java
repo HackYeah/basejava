@@ -5,10 +5,6 @@ import ru.javaops.webapp.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    @Override
-    public void clear() {
-
-    }
 
     @Override
     public void save(Resume resume) {

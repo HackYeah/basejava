@@ -8,16 +8,6 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage{
-    private static final int STORAGE_LIMIT = 10_000;
-
-    private Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size = 0;
-    private int index;
-
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
 
     public void save(Resume resume) {
         if (getIndex(resume.getUuid()) != -1) {
@@ -31,7 +21,7 @@ public class ArrayStorage extends AbstractArrayStorage{
     }
 
     public void update(Resume resume) {
-        index = getIndex(resume.getUuid());
+         int index = getIndex(resume.getUuid());
 
         if (index != -1) {
             storage[index] = resume;
@@ -40,17 +30,8 @@ public class ArrayStorage extends AbstractArrayStorage{
         }
     }
 
-    public Resume get(String uuid) {
-        index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("ERROR: Resume with " + uuid + " uuid is not present in data base");
-            return null;
-        }
-        return storage[index];
-    }
-
     public void delete(String uuid) {
-        index = getIndex(uuid);
+        int index = getIndex(uuid);
 
         if (index != -1) {
             storage[index] = storage[size - 1];
