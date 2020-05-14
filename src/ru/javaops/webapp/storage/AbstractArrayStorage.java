@@ -26,10 +26,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index < 0) {
             System.out.println("ERROR: Resume with " + uuid + " uuid is not present in data base");
         } else {
-            for (int i = index; i < size - 1; i++) {
-                storage[i] = storage[i + 1];
-            }
-            size--;
+            removeResume(index);
         }
     }
 
@@ -55,7 +52,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Error: No space left in data base to save resume with " + resume.getUuid() + " uuid.");
         } else {
             insertResume(resume);
-            size++;
+
         }
     }
 
@@ -73,4 +70,5 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void insertResume(Resume resume);
 
+    protected abstract void removeResume(int index);
 }

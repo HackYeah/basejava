@@ -2,6 +2,9 @@ package ru.javaops.webapp.storage;
 
 import ru.javaops.webapp.model.Resume;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
@@ -19,5 +22,18 @@ public class ArrayStorage extends AbstractArrayStorage {
         storage[size] = resume;
         size++;
     }
+
+    @Override
+    protected void removeResume(int index) {
+        ArrayList<Resume> tempList = new ArrayList<>(Arrays.asList(storage));
+        tempList.remove(index);
+        storage = tempList.toArray(new Resume[STORAGE_LIMIT]);
+        size--;
+
+        }
+
+
 }
+
+
 

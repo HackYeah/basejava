@@ -1,14 +1,14 @@
 package ru.javaops.webapp;
 
 import ru.javaops.webapp.model.Resume;
-import ru.javaops.webapp.storage.SortedArrayStorage;
+import ru.javaops.webapp.storage.ArrayStorage;
 import ru.javaops.webapp.storage.Storage;
 
 /**
  * Test for your ru.javaops.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    private static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         final Resume r1 = new Resume();
@@ -33,10 +33,10 @@ public class MainTestArrayStorage {
         printAll();
 
         //Test for update
-        ARRAY_STORAGE.update(r4);
+ /*       ARRAY_STORAGE.update(r4);
         if (ARRAY_STORAGE.get(r3.toString()).equals(r4)) {
             System.out.println("Test for update resume passed");
-        }
+        }*/
         ARRAY_STORAGE.clear();
         printAll();
 
