@@ -1,11 +1,14 @@
 package ru.javaops.webapp.storage;
 
+import ru.javaops.webapp.exception.ExistStorageException;
+import ru.javaops.webapp.exception.NotExistStorageException;
+import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 100_000;
+    protected static final int STORAGE_LIMIT = 10;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
     protected int index;
@@ -14,7 +17,7 @@ public abstract class AbstractArrayStorage implements Storage {
         index = getIndex(resume.getUuid());
 
         if (index < 0) {
-            System.out.println("ERROR: Resume with " + resume.getUuid() + " uuid is not present in data base");
+            throw new NotExistStorageException(resume.getUuid());
         } else {
             storage[index] = resume;
         }
@@ -24,7 +27,7 @@ public abstract class AbstractArrayStorage implements Storage {
         index = getIndex(uuid);
 
         if (index < 0) {
-            System.out.println("ERROR: Resume with " + uuid + " uuid is not present in data base");
+            throw new NotExistStorageException(uuid);
         } else {
             removeResume(index);
             size--;
@@ -48,9 +51,9 @@ public abstract class AbstractArrayStorage implements Storage {
         index = getIndex(resume.getUuid());
 
         if (index > 0) {
-            System.out.println("ERROR: Resume with " + resume.getUuid() + " uuid is already present in data base");
+            throw new ExistStorageException(resume.getUuid());
         } else if (size == STORAGE_LIMIT) {
-            System.out.println("Error: No space left in data base to save resume with " + resume.getUuid() + " uuid.");
+            throw new StorageException("Storage Overflow", resume.getUuid());
         } else {
             insertResume(resume);
             size++;
@@ -62,8 +65,7 @@ public abstract class AbstractArrayStorage implements Storage {
         index = getIndex(uuid);
 
         if (index < 0) {
-            System.out.println("ERROR: Resume with " + uuid + " uuid is not present in data base");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
